@@ -21,6 +21,5 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("jason").password("jason").roles("USER");
 		auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
-
 	}
 }
