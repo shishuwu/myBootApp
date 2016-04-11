@@ -60,7 +60,8 @@ Provide REST API and return json as response
 ### How? ###
 * Define Model
 
-	public class Greeting{...}   Define Controller 
+	public class Greeting{...}
+	* Define Controller 
 
 	@RestController
 	public class GreetingController {
@@ -83,6 +84,63 @@ Provide REST API and return json as response
 
 ## Spring JPA ##
 
+Provide REST API for Person entity from person table (h2 memory table)
+
+		http://localhost:8080/people
+
+POM:
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+       </dependency>
+ 
+### How? ###
+
+* Define Entity
+
+		@Entity
+		public class Person {...}
 
 
+* Define REST Repository (DAO)  
+
+		@RepositoryRestResource(collectionResourceRel = "people", path = "people")
+		public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
+		
+			List<Person> findByLastName(@Param("name") String name);
+		
+		}
+
+* Disable CSRF (or cannot get/post using Postman/Curl)
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http
+			.csrf().disable();
+		}
+
+
+* Use **POSTMAN** or **cURL** to manipulate ... (Add a person)
+
+		POST /people HTTP/1.1
+		Host: localhost:8080
+		Content-Type: application/json
+		Cache-Control: no-cache
+		Postman-Token: 47baf1c3-4785-5ba9-ac4b-a3714ff43fcf
+		
+		{
+		    "firstName":"Jason",
+		    "lastName":"Shi"
+		}
  
