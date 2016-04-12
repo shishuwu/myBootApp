@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.jasonshi.sample.entity.Person;
 import com.jasonshi.sample.repo.PersonRepository;
+import com.jasonshi.sample.service.PersonService;
 
 @SpringBootApplication
 public class WebappApplication {
@@ -19,7 +20,7 @@ public class WebappApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(PersonRepository personRepo) {
+	public CommandLineRunner demo(PersonRepository personRepo, PersonService personService) {
 		return (args -> {
 			personRepo.save(new Person("Magic", "Y"));
 			personRepo.save(new Person("Sky", "L"));
@@ -33,6 +34,15 @@ public class WebappApplication {
 			
 			LOG.info(personRepo.findOne(1L).toString());
 			LOG.info(personRepo.findByLastName("L").toString());
+			
+			// service
+			try {
+				personService.findPerson(null);	
+			} catch (Exception e) {
+				LOG.error(e.getMessage());
+			}
+			
+			LOG.info(personService.findPerson("C").toString());
 		});
 	}
 }

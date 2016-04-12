@@ -168,6 +168,52 @@ Set this UserDetailsService into Security configuration.
 		auth.userDetailsService(userDetailsService);
 	}
 
+### Spring MVC ###
+#### Repository ####
+Repository is a Java Object mapping to table of database. It should be pure and should not contain business logic.
+
+	/** @Repository will only be needed here, but if you want to provide REST API for this repo, you can use @RepositoryRestResource */
+	@RepositoryRestResource(collectionResourceRel = "person", path = "person")
+	public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
+		List<Person> findByLastName(@Param("name") String name);
+	}
+	
+#### Service ####
+Service is a reply on Repository and provide business extra logic, such as: check, exception, extra transition ...
+
+	@Service
+	public class PersonService {
+		
+		@Autowired
+		private PersonRepository personRepo;
+		
+		@Transactional(readOnly = true)
+		public List<Person> findPerson(String lastName) {}
+	}
+	
+#### Controller ####
+Controller is a binder of Model and View
+* Receive HTTPRequest
+* Process... (invoke Services)
+* Send back HTTPResponse
+
+	@Controller
+	@RequestMapping("persons")
+	public class PersonController {
+		@Autowired
+		private PersonService personService;
+	
+		@ResponseBody
+		@ResponseStatus(HttpStatus.OK)
+		@RequestMapping(method = RequestMethod.DELETE)
+		public void deletePerson(@RequestParam(value = "personId", defaultValue = "1") Long personId) {
+			personService.deletePerson(personId);
+		}
+	}
+	
+
+
 ## TODO ##
 * Still have problem with HttpSecurity syntax, comment ApiWebSecurityConfigurerAdapter otherwise, it would have problem.
+* Need to think about @RequestParam, @RequestBody and REST handling in Controller!
 
