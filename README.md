@@ -146,6 +146,8 @@ POM:
 		}
  
 
+[Spring REST Security](https://github.com/spring-projects/spring-data-examples/tree/master/rest/security)
+
 ### Spring Security - Customized UserDetailsService ###
 In memory user/password/role is not suitable for production environment. We need to get them from database or somewhere else.
 So you could define your own authentication service:
