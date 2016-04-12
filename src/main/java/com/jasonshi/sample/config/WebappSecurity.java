@@ -1,5 +1,6 @@
 package com.jasonshi.sample.config;
 
+import org.mockito.internal.util.DefaultMockingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Configuration;
@@ -9,14 +10,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configurable
 @EnableWebSecurity
 public class WebappSecurity extends WebSecurityConfigurerAdapter {
+	
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("jason").password("jason").roles("USER");
-		auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
+		// auth.inMemoryAuthentication().withUser("jason").password("jason").roles("USER");
+		// auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
+		
+		auth.userDetailsService(userDetailsService);
 	}
 
 	@Configuration

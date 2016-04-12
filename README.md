@@ -116,7 +116,7 @@ POM:
 
 * Define REST Repository (DAO)  
 
-		@RepositoryRestResource(collectionResourceRel = "people", path = "people")
+		@RepositoryRestResource(collctionResourceRel = "people", path = "people")
 		public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 		
 			List<Person> findByLastName(@Param("name") String name);
@@ -145,3 +145,25 @@ POM:
 		    "lastName":"Shi"
 		}
  
+
+### Spring Security - Customized UserDetailsService ###
+In memory user/password/role is not suitable for product. We need to get them from database or somewhere else.
+So you could define your own authentication service:
+ 
+	 public class MyUserDetailService implements UserDetailsService {
+	
+		@Override
+		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+			// Use Service -> Repository (JPA/JDBC) to get data and encapsulate as UserDetails 
+		}
+	}
+
+Set this UserDetailsService into Security configuration.
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
+	}
