@@ -1,6 +1,5 @@
 package com.jasonshi.sample.config;
 
-import org.mockito.internal.util.DefaultMockingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Configuration;
@@ -28,15 +27,15 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService);
 	}
 
-	@Configuration
-	@Order(1)
-	public static class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().antMatcher("/people/**").authorizeRequests().anyRequest().hasAnyRole("USER").and()
-					.httpBasic();
-		}
-	}
+//	@Configuration
+//	@Order(1)
+//	public static class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
+//		@Override
+//		protected void configure(HttpSecurity http) throws Exception {
+//			// http.csrf().disable().antMatcher("/person**").authorizeRequests().anyRequest().hasAnyRole("USER").and()
+//			// .httpBasic();
+//		}
+//	}
 
 	@Configuration
 	@Order(2)
@@ -53,7 +52,7 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 					// disable csrf
 					.csrf().disable()
 
-					.authorizeRequests().antMatchers("/", "/home").permitAll()
+					.authorizeRequests().antMatchers("/", "/home", "/person**").permitAll()
 					//
 					.anyRequest().authenticated()
 

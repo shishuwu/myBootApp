@@ -24,8 +24,8 @@ Then, you need to create a boot project from STS.
 			}
 		}
 
-
-You can configure your pom.xml to adjust your dependencies
+**Note**
+You can configure your pom.xml to adjust your dependencies accordingly.
 
 
 ## Spring Secrity ##
@@ -83,7 +83,7 @@ Provide REST API and return json as response
   
 
 
-## Spring JPA ##
+## Spring JPA - Repository REST ##
 
 Provide REST API for Person entity from person table (h2 memory table)
 
@@ -147,7 +147,7 @@ POM:
  
 
 ### Spring Security - Customized UserDetailsService ###
-In memory user/password/role is not suitable for product. We need to get them from database or somewhere else.
+In memory user/password/role is not suitable for production environment. We need to get them from database or somewhere else.
 So you could define your own authentication service:
  
 	 public class MyUserDetailService implements UserDetailsService {
@@ -167,3 +167,7 @@ Set this UserDetailsService into Security configuration.
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
+
+## TODO ##
+* Still have problem with HttpSecurity syntax, comment ApiWebSecurityConfigurerAdapter otherwise, it would have problem.
+
