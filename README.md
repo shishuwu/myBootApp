@@ -213,9 +213,17 @@ Controller is a binder of Model and View
 		}
 	}
 	
+## BEST PRACTICE ##
+### Security - Support both FormLogin & Basic Auth ###
+
+[Stackoverflow Answer](http://stackoverflow.com/questions/27774742/spring-security-http-basic-for-restful-and-formlogin-cookies-for-web-annotat)
+* Beware of the annotation, should be the same!
+
+## TODO LIST ##
+* UserDetailsService: Sill need to write (Service), Repository(DAO) to get user/role from database.
 
 
-## TODO ##
+
 * Still have problem with HttpSecurity syntax, comment ApiWebSecurityConfigurerAdapter otherwise, it would have problem.
 * Need to think about @RequestParam, @RequestBody and REST handling in Controller!
 

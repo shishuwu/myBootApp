@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyUserDetailService implements UserDetailsService {
+public class CustomizedUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,19 +42,21 @@ public class MyUserDetailService implements UserDetailsService {
 
 			@Override
 			public String getUsername() {
+				// any user could be login
 				return username;
 			}
 
 			@Override
 			public String getPassword() {
-				return "abc";
+				// same as user name
+				return username;
 			}
 
 			@Override
 			public Collection<? extends GrantedAuthority> getAuthorities() {
 				List<SimpleGrantedAuthority> auths = new java.util.ArrayList<SimpleGrantedAuthority>();
-				auths.add(new SimpleGrantedAuthority("USER"));
-				auths.add(new SimpleGrantedAuthority("ADMIN"));
+				auths.add(new SimpleGrantedAuthority("ROLE_USER"));
+				auths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 				return auths;
 			}
 		};
