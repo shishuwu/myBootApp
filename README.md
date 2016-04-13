@@ -40,16 +40,15 @@ Then, you need to create a boot project from STS.
 	
 		[BACK-END]
 		- src/main/java
-			- com.jasonshi
-				- app
-					- controllers
-					- dao
-					- dto
-					- init
-					- entity
-					- security
-					- services
-				- config					
+			- com.jasonshi.[sample|project_name]
+				- config
+				- controller
+				- dto
+				- init
+				- entity
+				- repository
+				- security
+				- service					
 				
 				
 		- src/main/resources

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jasonshi.sample.entity.Person;
-import com.jasonshi.sample.repo.PersonRepository;
+import com.jasonshi.sample.repository.PersonRepository;
 
 @Service
 public class PersonService {

@@ -1,4 +1,4 @@
-package com.jasonshi.sample.model;
+package com.jasonshi.sample.dto;
 
 public class Greeting {
 	private final long id;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jasonshi.sample.model.Greeting;
+import com.jasonshi.sample.dto.Greeting;
 
 @RestController
 public class GreetingController {

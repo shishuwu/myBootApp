@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.jasonshi.sample.entity.Person;
-import com.jasonshi.sample.repo.PersonRepository;
+import com.jasonshi.sample.repository.PersonRepository;
 import com.jasonshi.sample.service.PersonService;
 
 @SpringBootApplication

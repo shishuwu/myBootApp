@@ -1,4 +1,4 @@
-package com.jasonshi.sample.repo;
+package com.jasonshi.sample.repository;
 
 import java.util.List;
 

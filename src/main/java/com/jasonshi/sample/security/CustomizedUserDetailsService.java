@@ -1,4 +1,4 @@
-package com.jasonshi.sample.config;
+package com.jasonshi.sample.security;
 
 import java.util.Collection;
 import java.util.List;
