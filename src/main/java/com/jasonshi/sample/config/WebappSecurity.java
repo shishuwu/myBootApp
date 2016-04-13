@@ -36,7 +36,8 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 			// http.csrf().disable().antMatcher("/person**").authorizeRequests().anyRequest().hasAnyRole("USER").and()
 			// .httpBasic();
 			 http.csrf().disable()
-             .antMatcher("/person**")
+			 // how to handle multiple? need to know the syntax
+             .antMatcher("/device**")
              .authorizeRequests()
                  .anyRequest().hasAnyRole("ADMIN")
                  .and()
@@ -59,7 +60,7 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 					// disable csrf
 					.csrf().disable()
 
-					.authorizeRequests().antMatchers("/", "/home").permitAll()
+					.authorizeRequests().antMatchers("/", "/home", "/dvc**").permitAll()
 					//
 					.anyRequest().authenticated()
 

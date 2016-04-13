@@ -7,9 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.jasonshi.sample.entity.Person;
-import com.jasonshi.sample.repository.PersonRepository;
-import com.jasonshi.sample.service.PersonService;
+import com.jasonshi.sample.entity.Device;
+import com.jasonshi.sample.repository.DeviceRepository;
+import com.jasonshi.sample.service.DeviceService;
 
 @SpringBootApplication
 public class WebappApplication {
@@ -20,29 +20,29 @@ public class WebappApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(PersonRepository personRepo, PersonService personService) {
+	public CommandLineRunner demo(DeviceRepository personRepo, DeviceService personService) {
 		return (args -> {
-			personRepo.save(new Person("Magic", "Y"));
-			personRepo.save(new Person("Sky", "L"));
-			personRepo.save(new Person("Ocean", "C"));
+			personRepo.save(new Device("d1", "this is device 1"));
+			personRepo.save(new Device("d2", "this is device 2"));
+			personRepo.save(new Device("d3", "this is device 3"));
 			
 			// fetch
-			Iterable<Person> persons = personRepo.findAll();
-			for (Person p : persons) {
+			Iterable<Device> persons = personRepo.findAll();
+			for (Device p : persons) {
 				LOG.info(p.toString());
 			}
 			
 			LOG.info(personRepo.findOne(1L).toString());
-			LOG.info(personRepo.findByLastName("L").toString());
+			LOG.info(personRepo.findByName("d2").toString());
 			
 			// service
 			try {
-				personService.findPerson(null);	
+				personService.findDevice(null);	
 			} catch (Exception e) {
 				LOG.error(e.getMessage());
 			}
 			
-			LOG.info(personService.findPerson("C").toString());
+			LOG.info(personService.findDevice("d3").toString());
 		});
 	}
 }

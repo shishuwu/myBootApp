@@ -12,7 +12,7 @@ Basically, it is an back-end side project, following topics will be covered:
 * Spring Test - TBD
 	 
 ## Spring Boot - Setup ##
-You need following tools to start.
+You need following tools to start:
 - [STS](https://spring.io/tools/): Spring Tool Suit
 - [Maven 3.x](http://maven.apache.org/download.cgi) (dependency and build)
 - [Postman](http://www.getpostman.com/apps)
@@ -40,7 +40,7 @@ Then, you need to create a boot project from STS.
 	
 		[BACK-END]
 		- src/main/java
-			- com.jasonshi.[sample|project_name]
+			- com.jasonshi.sample
 				- config
 				- controller
 				- dto
@@ -128,11 +128,11 @@ Provide REST API and return json as response
   
 
 
-## Spring JPA - Repository REST ##
+## Spring DATA - Repository REST ##
 
-Provide REST API for Person entity from person **Table Level** (h2 memory table)
+Provide REST API for Device entity from **Table Level** (h2 memory table)
 
-		http://localhost:8080/person
+		http://localhost:8080/device
 
 POM:
 
@@ -156,38 +156,39 @@ POM:
 * Define Entity
 
 		@Entity
-		public class Person {...}
+		public class Device {...}
 
 
 * Define REST Repository (DAO)  
 
-		@RepositoryRestResource(collctionResourceRel = "person", path = "person")
-		public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
+		@RepositoryRestResource(collctionResourceRel = "device", path = "device")
+		public interface DeviceRepository extends PagingAndSortingRepository<Device, Long> {
 		
-			List<Person> findByLastName(@Param("name") String name);
+			List<Device> findByName(@Param("name") String name);
 		
 		}
 
-* **Disable CSRF** (or cannot get/post using Postman/Curl)
+* **Disable CSRF** for Basic authentication (or cannot get/post using Postman/Curl)
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
 			.csrf().disable();
+			...
 		}
 
 
-* Use **POSTMAN** or **cURL** to manipulate ... (Add a person)
+* Use **POSTMAN** or **cURL** to manipulate ... (Add a device)
 
-		POST /people HTTP/1.1
+		POST /device HTTP/1.1
 		Host: localhost:8080
 		Content-Type: application/json
 		Cache-Control: no-cache
 		Postman-Token: 47baf1c3-4785-5ba9-ac4b-a3714ff43fcf
 		
 		{
-		    "firstName":"Jason",
-		    "lastName":"Shi"
+		    "name":"device1",
+		    "desc":"this is device 1"
 		}
  **NOTE: **This REST API is not secured. We will secure it with Basic Authentication Later.
  
@@ -216,52 +217,52 @@ Set this UserDetailsService into Security configuration.
 		auth.userDetailsService(userDetailsService);
 	}
 
-### Spring MVC ###
-#### Repository ####
+## Spring MVC ##
+### Repository ###
 Repository is a Java Object mapping to table of database. It should be pure and should not contain business logic.
 
 	/** @Repository will only be needed here, but if you want to provide REST API for this repo, you can use @RepositoryRestResource */
-	@RepositoryRestResource(collectionResourceRel = "person", path = "person")
-	public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
-		List<Person> findByLastName(@Param("name") String name);
+	@RepositoryRestResource(collectionResourceRel = "device", path = "device")
+	public interface DeviceRepository extends PagingAndSortingRepository<Device, Long> {
+		List<Device> findByName(@Param("name") String name);
 	}
 	
-#### Service ####
+### Service ###
 Service is a reply on Repository and provide business extra logic, such as: check, exception, extra transition ...
 
 	@Service
-	public class PersonService {
+	public class DeviceService {
 		
 		@Autowired
-		private PersonRepository personRepo;
+		private DeviceRepository deviceRepo;
 		
 		@Transactional(readOnly = true)
-		public List<Person> findPerson(String lastName) {}
+		public List<Device> findDevice(String name) {}
 	}
 	
-#### Controller ####
+### Controller ###
 Controller is a binder of Model and View
 * Receive HTTPRequest
 * Process... (invoke Services)
 * Send back HTTPResponse
 
-	'@Controller
-	@RequestMapping("persons")
-	public class PersonController {
+	@Controller
+	@RequestMapping("dvc") // besides \device, this is another REST API
+	public class DeviceController {
 		@Autowired
-		private PersonService personService;
+		private DeviceService deviceService;
 	
 		@ResponseBody
 		@ResponseStatus(HttpStatus.OK)
 		@RequestMapping(method = RequestMethod.DELETE)
-		public void deletePerson(@RequestParam(value = "personId", defaultValue = "1") Long personId) {
-			personService.deletePerson(personId);
+		public void deleteDevice(@RequestParam(value = "deviceId", defaultValue = "1") Long deviceId) {
+			deviceService.deleteDevice(deviceId);
 		}
-	}'
+	}
 
 	
 	Method: DELETE
-	http://localhost:8080/persons?personId=1
+	http://localhost:8080/devices?id=1
 
 
 	
