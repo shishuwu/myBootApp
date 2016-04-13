@@ -1,13 +1,22 @@
-# myBootApp #
-This a sample tutorial of **Spring Boot 4.x** (based on samples from Spring official site). Since samples from Spring official site are separated. So:
-- I create single one to integrate them all
+# Spring Framework/Boot Sample #
+This is a sample tutorial of **Spring Framework 4.x** (based on **Spring Boot**). Since samples from Spring official site are independent which is hard to have a big landscape from top, so:
+- I create this single one project to integrate them all
 - Also, as a practice of coding. (Talking is cheap, give me the code...)
+
+Basically, it is an back-end side project, following topics will be covered:
+* Spring Boot
+* Spring MVC
+* Spring Data
+* Spring REST
+* Spring Security
+* Spring Test - TBD
 	 
-## Setup ##
+## Spring Boot - Setup ##
 You need following tools to start.
-- STS: Spring Tool Suit
-- Samples from Spring site (to refer)
-- Maven 3.x (dependency and build)
+- [STS](https://spring.io/tools/): Spring Tool Suit
+- [Maven 3.x](http://maven.apache.org/download.cgi) (dependency and build)
+- [Postman](http://www.getpostman.com/apps)
+- Spring [Guide](https://spring.io/guides) and [Samples](https://github.com/spring-projects/spring-data-examples)
 
 Then, you need to create a boot project from STS.
 - File > New > **Spring Starter Project** ...
@@ -24,10 +33,47 @@ Then, you need to create a boot project from STS.
 			}
 		}
 
-**Note**
-You can configure your pom.xml to adjust your dependencies accordingly.
+**Note**: You can configure your pom.xml to adjust your dependencies accordingly later.
+
+##### Project Structure #####
+	+ Project Name
+	
+		[BACK-END]
+		- src/main/java
+			- com.jasonshi
+				- app
+					- controllers
+					- dao
+					- dto
+					- init
+					- entity
+					- security
+					- services
+				- config					
+				
+				
+		- src/main/resources
+			- template
+		- src/test/java
+		
+		
+		[FRONT-END]
+		- src/main
+			- webapp
+				- resources
+					- css
+					- img
+					- js
+					- .html
+			- test
+			
+		[OTHER]
+		- pom.xml
+		- README.md
 
 
+
+---
 ## Spring Secrity ##
 
 		@Configurable
@@ -85,9 +131,9 @@ Provide REST API and return json as response
 
 ## Spring JPA - Repository REST ##
 
-Provide REST API for Person entity from person table (h2 memory table)
+Provide REST API for Person entity from person **Table Level** (h2 memory table)
 
-		http://localhost:8080/people
+		http://localhost:8080/person
 
 POM:
 
@@ -116,14 +162,14 @@ POM:
 
 * Define REST Repository (DAO)  
 
-		@RepositoryRestResource(collctionResourceRel = "people", path = "people")
+		@RepositoryRestResource(collctionResourceRel = "person", path = "person")
 		public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 		
 			List<Person> findByLastName(@Param("name") String name);
 		
 		}
 
-* Disable CSRF (or cannot get/post using Postman/Curl)
+* **Disable CSRF** (or cannot get/post using Postman/Curl)
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
@@ -144,6 +190,7 @@ POM:
 		    "firstName":"Jason",
 		    "lastName":"Shi"
 		}
+ **NOTE: **This REST API is not secured. We will secure it with Basic Authentication Later.
  
 
 [Spring REST Security](https://github.com/spring-projects/spring-data-examples/tree/master/rest/security)
@@ -152,7 +199,7 @@ POM:
 In memory user/password/role is not suitable for production environment. We need to get them from database or somewhere else.
 So you could define your own authentication service:
  
-	 public class MyUserDetailService implements UserDetailsService {
+	 public class CustomizedUserDetailsService implements UserDetailsService {
 	
 		@Override
 		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -199,7 +246,7 @@ Controller is a binder of Model and View
 * Process... (invoke Services)
 * Send back HTTPResponse
 
-	@Controller
+	'@Controller
 	@RequestMapping("persons")
 	public class PersonController {
 		@Autowired
@@ -211,7 +258,13 @@ Controller is a binder of Model and View
 		public void deletePerson(@RequestParam(value = "personId", defaultValue = "1") Long personId) {
 			personService.deletePerson(personId);
 		}
-	}
+	}'
+
+	
+	Method: DELETE
+	http://localhost:8080/persons?personId=1
+
+
 	
 ## BEST PRACTICE ##
 ### Security - Support both FormLogin & Basic Auth ###
@@ -219,11 +272,15 @@ Controller is a binder of Model and View
 [Stackoverflow Answer](http://stackoverflow.com/questions/27774742/spring-security-http-basic-for-restful-and-formlogin-cookies-for-web-annotat)
 * Beware of the annotation, should be the same!
 
+## BOOKS ##
+* Spring In Action
+
 ## TODO LIST ##
-* UserDetailsService: Sill need to write (Service), Repository(DAO) to get user/role from database.
-
-
+* serDetailsService: Sill need to write (Service), Repository(DAO) to get user/role from database. 
 
 * Still have problem with HttpSecurity syntax, comment ApiWebSecurityConfigurerAdapter otherwise, it would have problem.
 * Need to think about @RequestParam, @RequestBody and REST handling in Controller!
+* Spring Test
+
+> 引用的文字 
 
