@@ -1,7 +1,7 @@
 # Spring Framework/Boot Sample #
 This is a sample tutorial of **Spring Framework 4.x** (based on **Spring Boot**). Since samples from Spring official site are independent which is hard to have a big landscape from top, so:
 - I create this single one project to integrate them all
-- Also, as a practice of coding. (Talking is cheap, give me the code...)
+- Also, as a practice of coding. (Talk is cheap, show me the code...)
 
 Basically, it is an back-end side project, following topics will be covered:
 * Spring Boot
@@ -9,7 +9,7 @@ Basically, it is an back-end side project, following topics will be covered:
 * Spring Data
 * Spring REST
 * Spring Security
-* Spring Test - TBD
+* Spring Test - TBC
 	 
 ## Spring Boot - Setup ##
 You need following tools to start:
@@ -73,7 +73,7 @@ Then, you need to create a boot project from STS.
 
 
 ---
-## Spring Secrity ##
+## Spring Security ##
 
 		@Configurable
 		@EnableWebSecurity
@@ -219,7 +219,7 @@ Set this UserDetailsService into Security configuration.
 
 ## Spring MVC ##
 ### Repository ###
-Repository is a Java Object mapping to table of database. It should be pure and should not contain business logic.
+Entity is a Java Object mapping to table of database. Repository is an entity manipulator which should be pure and should not contain business logic.
 
 	/** @Repository will only be needed here, but if you want to provide REST API for this repo, you can use @RepositoryRestResource */
 	@RepositoryRestResource(collectionResourceRel = "device", path = "device")
@@ -264,6 +264,33 @@ Controller is a binder of Model and View
 	Method: DELETE
 	http://localhost:8080/devices?id=1
 
+## Spring TEST ##
+Spring is born for unit test. Why is that:
+* Unit test's essential job is to: test its own logic.
+* And eliminate the influence of other references. (use mock)
+
+That's what Spring do: Using DI and AOP to loose coupling. All references are **@Autowired** 
+* We just need to (define and) use the interface  
+* Then use mockito to mock whatever(implementation of interface) we want
+
+
+## Other projects ##
+### Lombok ###
+[Lombok](https://projectlombok.org/) is project to simplify your POJO class.
+* Need to install for IDE (such as Eclipse or STS)
+* Import to project
+
+	@Data
+	@NoArgsConstructor
+	public class Device {
+		private long id;
+		private String name;
+		private String desc;
+	}
+
+
+[Tutorial](http://jnb.ociweb.com/jnb/jnbJan2010.html)
+
 
 	
 ## BEST PRACTICE ##
@@ -273,12 +300,13 @@ Controller is a binder of Model and View
 * Beware of the annotation, should be the same!
 
 ## BOOKS ##
-* Spring In Action
+* Spring in Action (4th Edition)
 
 ## TODO LIST ##
 * serDetailsService: Sill need to write (Service), Repository(DAO) to get user/role from database. 
 
-* Still have problem with HttpSecurity syntax, comment ApiWebSecurityConfigurerAdapter otherwise, it would have problem.
+* HttpSecurity interceptor syntax 
+
 * Need to think about @RequestParam, @RequestBody and REST handling in Controller!
 * Spring Test
 
