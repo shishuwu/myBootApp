@@ -25,6 +25,12 @@ public class WebappApplication {
 			personRepo.save(new Device("d1", "this is device 1"));
 			personRepo.save(new Device("d2", "this is device 2"));
 			personRepo.save(new Device("d3", "this is device 3"));
+			try {
+				personRepo.save(new Device(null, "this is device 3"));
+			} catch (Exception e) {
+				LOG.error("device name cannot be null", e);
+			}
+			
 			
 			// fetch
 			Iterable<Device> persons = personRepo.findAll();
@@ -33,7 +39,7 @@ public class WebappApplication {
 			}
 			
 			LOG.info(personRepo.findOne(1L).toString());
-			LOG.info(personRepo.findByName("d2").toString());
+			LOG.info(personRepo.findByName("d2`").toString());
 			
 			// service
 			try {

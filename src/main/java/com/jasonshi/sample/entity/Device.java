@@ -7,6 +7,7 @@ import javax.persistence.Id;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Data
@@ -20,7 +21,7 @@ public class Device {
 	private String name;
 	private String desc;
 
-	public Device(String name, String desc) {
+	public Device(@NonNull String name, String desc) {
 		this.name = name;
 		this.desc = desc;
 	}
