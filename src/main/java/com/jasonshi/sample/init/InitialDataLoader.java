@@ -43,9 +43,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
 		Role adminRole = roleRepository.findByName("ROLE_ADMIN");
 		User user = new User();
-		user.setFirstName("Test");
-		user.setLastName("Test");
-		// user.setPassword(passwordEncoder.encode("test"));
+		user.setFirstName("test");
+		user.setLastName("test");
+		// user.setPassword(passwordEncoder.encode("test")); // TODO still need to encode for security
 		user.setPassword("test");
 		user.setEmail("test@test.com");
 		user.setRoles(Arrays.asList(adminRole));

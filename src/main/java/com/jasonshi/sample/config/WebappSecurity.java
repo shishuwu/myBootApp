@@ -39,7 +39,8 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 			 // how to handle multiple? need to know the syntax
              .antMatcher("/device**")
              .authorizeRequests()
-                 .anyRequest().hasAnyRole("ADMIN")
+                 // .anyRequest().hasAnyRole("ADMIN")
+                 .anyRequest().hasAuthority("WRITE_PRIVILEGE")
                  .and()
              .httpBasic();
 		}

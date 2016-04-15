@@ -88,7 +88,27 @@ Then, you need to create a boot project from STS.
 				// auth in memory or database ...
 			}						
 		} 
-		
+## Spring Security - Customized UserDetailsService ##
+In memory user/password/role is not suitable for production environment. We need to get them from database or somewhere else.
+So you could define your own authentication service:
+ 
+	 public class CustomizedUserDetailsService implements UserDetailsService {
+	
+		@Override
+		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+			// Use Service -> Repository (JPA/JDBC) to get data and encapsulate as UserDetails 
+		}
+	}
+
+Set this UserDetailsService into Security configuration.
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
+	}		
 		 
 ## Spring REST ##
 Provide REST API and return json as response
@@ -195,27 +215,11 @@ POM:
 
 [Spring REST Security](https://github.com/spring-projects/spring-data-examples/tree/master/rest/security)
 
-### Spring Security - Customized UserDetailsService ###
-In memory user/password/role is not suitable for production environment. We need to get them from database or somewhere else.
-So you could define your own authentication service:
- 
-	 public class CustomizedUserDetailsService implements UserDetailsService {
-	
-		@Override
-		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-			// Use Service -> Repository (JPA/JDBC) to get data and encapsulate as UserDetails 
-		}
-	}
+### Spring JPA ###
+Still a lot to learn the specification of JPA. TBC... 
+* @Entity, @OneToMany, @ManyToMany, @JoinTable @JoinTable
+* CrudRepository and its sub-classes 
 
-Set this UserDetailsService into Security configuration.
-
-	@Autowired
-	private UserDetailsService userDetailsService;
-	
-	@Autowired
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
-	}
 
 ## Spring MVC ##
 ### Repository ###

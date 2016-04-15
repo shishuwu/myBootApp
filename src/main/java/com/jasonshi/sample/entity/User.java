@@ -3,6 +3,7 @@ package com.jasonshi.sample.entity;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class User {
     private boolean enabled;
     private boolean tokenExpired;
  
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( 
         name = "users_roles", 
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
