@@ -303,12 +303,17 @@ That's what Spring do: Using DI and AOP to loose coupling. All references are **
 * Spring in Action (4th Edition)
 
 ## TODO LIST ##
-* serDetailsService: Sill need to write (Service), Repository(DAO) to get user/role from database. 
+* Basic Authentication config: support multiple rest api
+* Multiple data sources
+* Spring Test
+* Project init some data
+
+* DetailsService: Sill need to write (Service), Repository(DAO) to get user/role from database. 
 
 * HttpSecurity interceptor syntax 
 
 * Need to think about @RequestParam, @RequestBody and REST handling in Controller!
-* Spring Test
+
 
 > 引用的文字 
 

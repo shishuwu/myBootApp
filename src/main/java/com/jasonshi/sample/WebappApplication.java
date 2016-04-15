@@ -14,7 +14,7 @@ import com.jasonshi.sample.service.DeviceService;
 @SpringBootApplication
 public class WebappApplication {
 	private static final Logger LOG = LoggerFactory.getLogger(WebappApplication.class);
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(WebappApplication.class, args);
 	}
@@ -30,25 +30,25 @@ public class WebappApplication {
 			} catch (Exception e) {
 				LOG.error("device name cannot be null", e);
 			}
-			
-			
+
 			// fetch
 			Iterable<Device> persons = personRepo.findAll();
 			for (Device p : persons) {
 				LOG.info(p.toString());
 			}
-			
+
 			LOG.info(personRepo.findOne(1L).toString());
 			LOG.info(personRepo.findByName("d2`").toString());
-			
+
 			// service
 			try {
-				personService.findDevice(null);	
+				personService.findDevice(null);
 			} catch (Exception e) {
 				LOG.error(e.getMessage());
 			}
-			
+
 			LOG.info(personService.findDevice("d3").toString());
+
 		});
 	}
 }
