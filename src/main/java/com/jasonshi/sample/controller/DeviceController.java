@@ -33,4 +33,5 @@ public class DeviceController {
 	public List<Device> findDevices() {
 		return deviceService.findDevices();
 	}
+	
 }

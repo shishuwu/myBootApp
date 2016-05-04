@@ -45,9 +45,28 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
              .httpBasic();
 		}
 	}
-
+	
 	@Configuration
 	@Order(2)
+	public static class ApiWebSecurityConfig2 extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			// http.csrf().disable().antMatcher("/person**").authorizeRequests().anyRequest().hasAnyRole("USER").and()
+			// .httpBasic();
+			 http.csrf().disable()
+			 // how to handle multiple? need to know the syntax
+             .antMatcher("/dvc**")
+             .authorizeRequests()
+                 // .anyRequest().hasAnyRole("ADMIN")
+                 .anyRequest().hasAuthority("WRITE_PRIVILEGE")
+                 .and()
+             .httpBasic();
+		}
+	}
+
+
+	@Configuration
+	@Order(3)
 	public static class FormWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		@Override
@@ -61,7 +80,7 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 					// disable csrf
 					.csrf().disable()
 
-					.authorizeRequests().antMatchers("/", "/home", "/dvc**").permitAll()
+					.authorizeRequests().antMatchers("/", "/home", "/message").permitAll()
 					//
 					.anyRequest().authenticated()
 
