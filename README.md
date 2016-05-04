@@ -295,7 +295,13 @@ That's what Spring do: Using DI and AOP to loose coupling. All references are **
 
 [Tutorial](http://jnb.ociweb.com/jnb/jnbJan2010.html)
 
-
+## Streaming way ##
+* By default, the controller is **asynchronized**: Need to check whether it has problem or not
+* ObjectInputStream, ObjectOutStream:
+	
+		Client Side: get from URL connection
+	
+		Server side: get from HttpServletRequest and HttpServletResponse
 	
 ## BEST PRACTICE ##
 ### Security - Support both FormLogin & Basic Auth ###
