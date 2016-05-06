@@ -31,27 +31,30 @@ import com.jasonshi.sample.entity.Message;
  *
  */
 @Controller
-//@Scope("singleton")
+@Scope("singleton")
 @RequestMapping("message")
 public class MessageController {
-	
+
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.POST)
 	public Message sendMessage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		Message message = null;
-		ObjectInputStream objIn = new ObjectInputStream(req.getInputStream());
-		try {
-			message = (Message) objIn.readObject();
-			message.setContent(message.getContent() + " updated");
+		//synchronized (this) {
+			Message message = null;
+			ObjectInputStream objIn = new ObjectInputStream(req.getInputStream());
+			try {
+				message = (Message) objIn.readObject();
+				message.setContent(message.getContent() + " updated");
 
-			ObjectOutput objOut = new ObjectOutputStream(resp.getOutputStream());
-			objOut.writeObject(message);
-			objOut.flush();
-			objOut.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+				ObjectOutput objOut = new ObjectOutputStream(resp.getOutputStream());
+				objOut.writeObject(message);
+				objOut.flush();
+				objOut.close();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			return message;
+
 		}
-		return message;
-	}
+	//}
 }

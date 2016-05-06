@@ -295,7 +295,7 @@ That's what Spring do: Using DI and AOP to loose coupling. All references are **
 
 [Tutorial](http://jnb.ociweb.com/jnb/jnbJan2010.html)
 
-## Streaming way ##
+### Java Object Streaming over HTTP ###
 * By default, the controller is **asynchronized**: Need to check whether it has problem or not
 * ObjectInputStream, ObjectOutStream:
 	
@@ -308,6 +308,12 @@ That's what Spring do: Using DI and AOP to loose coupling. All references are **
 
 [Stackoverflow Answer](http://stackoverflow.com/questions/27774742/spring-security-http-basic-for-restful-and-formlogin-cookies-for-web-annotat)
 * Beware of the annotation, should be the same!
+
+### How many Servlet instances are created, based on multiple clients requst? ###
+* Servlet will be singleton by default, but per request, there will be per thread to handle (in parallel) 
+
+[Servlet instances per requests](http://stackoverflow.com/questions/10577414/10-clients-requests-for-a-servlet-how-many-servlet-instances-are-created)
+
 
 ## BOOKS ##
 * Spring in Action (4th Edition)
