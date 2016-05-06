@@ -1,14 +1,21 @@
 package com.jasonshi.sample.client;
 
+import java.io.BufferedReader;
 import java.io.EOFException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.jasonshi.sample.entity.Message;
 
@@ -19,28 +26,117 @@ import com.jasonshi.sample.entity.Message;
  */
 public class Client {
 
-	public static void main(String[] args) {
+	public static String fileContent;
+	public static String fileContent_100M;
+	public static String fileContent_500M;
 
-		ExecutorService exector = Executors.newCachedThreadPool();
-		AtomicInteger id = new AtomicInteger(0);
+	@BeforeClass
+	public static void setup() throws Exception {
+		fileContent = readFile(".\\src\\main\\java\\com\\jasonshi\\sample\\client\\payload.txt");
+		fileContent_100M = readFile("C:\\shishuwu\\Documents\\4.8\\HTTP\\files\\jenkins-1.616.zip");
+		fileContent_500M = readFile("C:\\shishuwu\\Documents\\4.8\\HTTP\\files\\test.vmdk");
+	}
 
+	@Test
+	public void testSingle() {
+		createAndSendMessage(0);
+	}
+
+	@Test
+	public void test100() {
 		for (int i = 0; i < 100; i++) {
-			exector.execute(new Runnable() {
+			createAndSendMessage(i);
+		}
+	}
+
+	@Test
+	public void test_concurrent() {
+		ExecutorService exector = Executors.newCachedThreadPool();
+		AtomicInteger id = new AtomicInteger(200);
+
+		for (int i = 200; i < 300; i++) {
+			exector.submit(new Callable<Message>() {
 				@Override
-				public void run() {
-					Message msg = new Message(id.incrementAndGet(), "content " + id.get());
-					System.out.println("orignal: " + msg);
-
-					msg = sendMessage(msg);
-
-					System.out.println("new: " + msg);
-					System.out.println("=================================");
+				public Message call() throws Exception {
+					return createAndSendMessage(id.getAndIncrement());
 				}
 			});
 		}
 	}
 
-	public static Message sendMessage(Message message) {
+	@Test
+	public void test_readFromFile() throws Exception {
+		createAndSendMessage(0, fileContent);
+	}
+
+	// @Test
+	public void test_readFromFile_100() throws Exception {
+		for (int i = 100; i < 200; i++) {
+
+			System.out.print("number: " + i + " ");
+			createAndSendMessage(i, fileContent);
+		}
+	}
+
+	// @Test
+	public void test_readFromFile_100_concurrent() {
+		ExecutorService exector = Executors.newCachedThreadPool();
+		AtomicInteger id = new AtomicInteger(10000);
+
+		for (int i = 200; i < 300; i++) {
+			exector.submit(new Callable<Message>() {
+				@Override
+				public Message call() throws Exception {
+					return createAndSendMessage(id.getAndIncrement(), fileContent);
+				}
+			});
+		}
+	}
+
+	@Test
+	public void test_readFromSingleHugeFile() {
+		createAndSendMessage(0, fileContent_100M);
+	}
+
+	// ==========================================================================================================
+
+	private static String readFile(String file) throws Exception {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		StringBuilder stringBuilder = new StringBuilder();
+		String ls = System.getProperty("line.separator");
+
+		try {
+			while ((line = reader.readLine()) != null) {
+				stringBuilder.append(line);
+				stringBuilder.append(ls);
+			}
+
+			return stringBuilder.toString();
+		} finally {
+			reader.close();
+		}
+	}
+
+	private static Message createAndSendMessage(int id) {
+		return createAndSendMessage(id, null);
+	}
+
+	private static Message createAndSendMessage(int id, String content) {
+		if (content == null) {
+			content = "content " + id;
+		}
+		Message msg = new Message(id, content);
+
+		msg = sendMessage(msg);
+
+		Assert.assertTrue(msg.getContent().endsWith(" updated"));
+		System.out.println("size: " + msg.getContent().length());
+
+		return msg;
+	}
+
+	private static Message sendMessage(Message message) {
 		URLConnection conn = null;
 		Message reply = null;
 		try {

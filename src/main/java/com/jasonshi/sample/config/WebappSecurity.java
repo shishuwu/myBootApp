@@ -88,6 +88,8 @@ public class WebappSecurity extends WebSecurityConfigurerAdapter {
 					.and().formLogin().loginPage("/login").permitAll()
 					// logout
 					.and().logout().permitAll();
+			
+			http.headers().cacheControl().disable();
 		}
 	}
 }
