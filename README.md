@@ -310,7 +310,14 @@ That's what Spring do: Using DI and AOP to loose coupling. All references are **
 * Beware of the annotation, should be the same!
 
 ### How many Servlet instances are created, based on multiple clients requst? ###
-* Servlet will be singleton by default, but per request, there will be per thread to handle (in parallel) 
+* Servlet instance will be singleton by default, but per request, there will be per thread to handle (in parallel)
+		
+		@Scope("singleton")	
+
+* Meanwhile, you can change Servlet to multiple instances according to request, use following annotation
+		
+		@Scope("prototype") 
+
 
 [Servlet instances per requests](http://stackoverflow.com/questions/10577414/10-clients-requests-for-a-servlet-how-many-servlet-instances-are-created)
 

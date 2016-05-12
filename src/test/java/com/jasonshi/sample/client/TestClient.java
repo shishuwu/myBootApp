@@ -84,7 +84,7 @@ public class TestClient {
 			Future<Message> future = exector.submit(new Callable<Message>() {
 				@Override
 				public Message call() throws Exception {
-					return createAndSendMessage(id.getAndIncrement(), fileContent_10M);
+					return createAndSendMessage(id.getAndIncrement(), fileContent_10K);
 				}
 			});
 			futures.add(future);

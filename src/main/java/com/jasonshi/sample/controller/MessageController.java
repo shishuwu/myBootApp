@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,30 +32,32 @@ import com.jasonshi.sample.entity.Message;
  *
  */
 @Controller
-@Scope("singleton")
+@Scope("prototype")
 @RequestMapping("message")
 public class MessageController {
+
+	private AtomicLong requestCount = new AtomicLong(0L);
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.POST)
 	public Message sendMessage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		//synchronized (this) {
-			Message message = null;
-			ObjectInputStream objIn = new ObjectInputStream(req.getInputStream());
-			try {
-				message = (Message) objIn.readObject();
-				message.setContent(message.getContent() + " updated");
+		System.out.println(requestCount.getAndIncrement());
+		
+		Message message = null;
+		ObjectInputStream objIn = new ObjectInputStream(req.getInputStream());
+		try {
+			message = (Message) objIn.readObject();
+			message.setContent(message.getContent() + " updated");
 
-				ObjectOutput objOut = new ObjectOutputStream(resp.getOutputStream());
-				objOut.writeObject(message);
-				objOut.flush();
-				objOut.close();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			return message;
-
+			ObjectOutput objOut = new ObjectOutputStream(resp.getOutputStream());
+			objOut.writeObject(message);
+			objOut.flush();
+			objOut.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-	//}
+		return message;
+
+	}
 }
